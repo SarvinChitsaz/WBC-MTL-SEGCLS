@@ -2,20 +2,10 @@ import os
 import numpy as np
 import pandas as pd
 from PIL import Image
-from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
+from torch.utils.data import Dataset
 
 
-def normalize_id(x):
-    return str(x).zfill(3)
-
-
-def convert_mask(mask):
-    out = np.zeros_like(mask, dtype=np.int64)
-    out[mask == 128] = 1
-    out[mask == 255] = 2
-    return out
+from .label_utils import normalize_id, convert_mask
 
 
 class WBCDataset(Dataset):
@@ -46,44 +36,8 @@ class WBCDataset(Dataset):
             image = aug["image"]
             mask = aug["mask"].long()
 
-        return {"image": image, "mask": mask, "label": label}
-
-
-def get_dataloaders(base_path, batch_size=8, test_size=0.2):
-
-    csv1 = os.path.join(base_path, "Class Labels of Dataset 1.csv")
-    csv2 = os.path.join(base_path, "Class Labels of Dataset 2.csv")
-
-    dataset1_dir = os.path.join(base_path, "Dataset 1")
-    dataset2_dir = os.path.join(base_path, "Dataset 2")
-
-    df1 = pd.read_csv(csv1)
-    df2 = pd.read_csv(csv2)
-
-    df1["dataset_dir"] = dataset1_dir
-    df2["dataset_dir"] = dataset2_dir
-
-    df = pd.concat([df1, df2], ignore_index=True)
-
-    le = LabelEncoder()
-    df["encoded_label"] = le.fit_transform(df["class label"])
-
-    train_df, test_df = train_test_split(
-        df,
-        test_size=test_size,
-        stratify=df["class label"],
-        random_state=42
-    )
-
-    train_ds = WBCDataset(train_df)
-    test_ds = WBCDataset(test_df)
-
-    class_counts = train_df["encoded_label"].value_counts().to_dict()
-    weights = train_df["encoded_label"].apply(lambda x: 1.0 / class_counts[x])
-
-    sampler = WeightedRandomSampler(weights.values, len(weights), replacement=True)
-
-    train_loader = DataLoader(train_ds, batch_size=batch_size, sampler=sampler)
-    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
-
-    return train_loader, test_loader, len(le.classes_)
+        return {
+            "image": image,
+            "mask": mask,
+            "label": label
+        }
