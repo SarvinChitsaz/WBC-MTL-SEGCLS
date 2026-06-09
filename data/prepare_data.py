@@ -1,23 +1,9 @@
-import os
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader, WeightedRandomSampler
-
-from .dataset import WBCDataset
+from sklearn.preprocessing import LabelEncoder
 
 
-def get_dataloaders(
-    csv1_path,
-    csv2_path,
-    dataset1_dir,
-    dataset2_dir,
-    batch_size,
-    test_size,
-    train_transform,
-    test_transform
-):
-
+def load_raw_data(csv1_path, csv2_path, dataset1_dir, dataset2_dir):
     df1 = pd.read_csv(csv1_path)
     df2 = pd.read_csv(csv2_path)
 
@@ -27,14 +13,36 @@ def get_dataloaders(
     df1["dataset_dir"] = dataset1_dir
     df2["dataset_dir"] = dataset2_dir
 
-    df = pd.concat([df1, df2], ignore_index=True)
+    return pd.concat([df1, df2], ignore_index=True)
 
-    df = df.dropna()
 
+def filter_classes(df, min_samples=20):
+    counts = df["class label"].value_counts()
+    valid = counts[counts >= min_samples].index
+    return df[df["class label"].isin(valid)].reset_index(drop=True)
+
+
+def add_encoding(df):
     le = LabelEncoder()
     df["encoded_label"] = le.fit_transform(df["class label"])
+    return df, le
 
-    train_df, test_df = train_test_split(
+
+def split_data(df, test_size=0.2, seed=42):
+    return train_test_split(
+        df,
+        test_size=test_size,
+        random_state=seed,
+        stratify=df["class label"]
+    )
+
+
+def prepare_dataset(csv1_path, csv2_path, dataset1_dir, dataset2_dir):
+    df = load_raw_data(csv1_path, csv2_path, dataset1_dir, dataset2_dir)
+    df = filter_classes(df)
+    df, le = add_encoding(df)
+    train_df, test_df = split_data(df)
+    return train_df.reset_index(drop=True), test_df.reset_index(drop=True), le    train_df, test_df = train_test_split(
         df,
         test_size=test_size,
         stratify=df["class label"],
