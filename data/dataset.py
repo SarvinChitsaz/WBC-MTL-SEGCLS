@@ -3,8 +3,6 @@ import numpy as np
 import pandas as pd
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
 from .label_utils import normalize_id, convert_mask
 
 
@@ -35,6 +33,29 @@ class WBCDataset(Dataset):
         if self.transform:
             aug = self.transform(image=image, mask=mask)
             image = aug["image"]
+            mask = aug["mask"].long()
+
+        return {"image": image, "mask": mask, "label": label}
+
+
+def get_dataloaders(train_df, test_df, batch_size=8):
+
+    class_counts = train_df["encoded_label"].value_counts().to_dict()
+    weights = train_df["encoded_label"].apply(lambda x: 1.0 / class_counts[x])
+
+    sampler = WeightedRandomSampler(
+        weights=weights.values,
+        num_samples=len(weights),
+        replacement=True
+    )
+
+    train_ds = WBCDataset(train_df)
+    test_ds = WBCDataset(test_df)
+
+    train_loader = DataLoader(train_ds, batch_size=batch_size, sampler=sampler)
+    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
+
+    return train_loader, test_loader            image = aug["image"]
             mask = aug["mask"].long()
 
         return {"image": image, "mask": mask, "label": label}
