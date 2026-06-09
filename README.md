@@ -8,7 +8,7 @@ Simultaneous pixel-level segmentation and cell-type classification in a single f
 # Overview
 
 <p align="center">
-  <img src="assets/gradcam_examples.png" width="500">
+  <img src="assets/results/gradcam/gradcam_sample_1.png" width="500">
 </p>
 <p align="center">
   <em>Grad-CAM heatmaps highlighting regions influencing classification decisions.</em>
@@ -351,44 +351,51 @@ pip install -r requirements.txt
 
 # Visualization Results
 
-### Segmentation Samples
+## Segmentation Samples
 
 <p align="center">
-  <img src="assets/segmentation_samples.png" width="600">
+  <img src="assets/results/segmentation/seg_sample_1.png" width="500">
+</p>
+
+<p align="center">
+  <img src="assets/results/segmentation/seg_sample_2.png" width="500">
 </p>
 
 _Side-by-side comparison of original image, ground-truth mask, and predicted mask._
 
 ---
 
-### Classification Predictions
+## Classification Predictions
 
 <p align="center">
-  <img src="assets/prediction_results.png" width="600">
+  <img src="assets/results/classification/classification_samples.png" width="600">
 </p>
 
-_Correctly classified samples (green) and incorrectly classified samples (red)._
+_Correctly and incorrectly classified white blood cell samples._
 
 ---
 
-### Confusion Matrix
+## Confusion Matrix
 
 <p align="center">
-  <img src="assets/confusion_matrix.png" width="400">
+  <img src="assets/results/confusion_matrix/confusion_matrix.png" width="500">
 </p>
 
 _Per-class classification performance across all four WBC categories._
 
 ---
 
-### Grad-CAM Explainability
+## Grad-CAM Explainability
 
 <p align="center">
-  <img src="assets/gradcam_examples.png" width="500">
+  <img src="assets/results/gradcam/gradcam_sample_1.png" width="500">
 </p>
 
-_Grad-CAM heatmaps overlaid on test images showing which morphological regions drive the model's classification decisions._
+<p align="center">
+  <img src="assets/results/gradcam/gradcam_sample_2.png" width="500">
+</p>
 
+_Grad-CAM heatmaps highlighting the image regions most influential for classification decisions._
 ---
 
 # Notes
