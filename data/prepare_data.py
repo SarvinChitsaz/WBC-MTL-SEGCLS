@@ -16,12 +16,10 @@ def load_and_prepare(csv1_path, csv2_path, dataset1_dir, dataset2_dir):
 
     df = pd.concat([df1, df2], ignore_index=True)
 
-    # filter classes with < 20 samples
     counts = df["class label"].value_counts()
     valid = counts[counts >= 20].index
     df = df[df["class label"].isin(valid)].reset_index(drop=True)
 
-    # check file existence
     def mask_exists(row):
         img_id = normalize_id(row["image ID"])
         dir_ = row["dataset_dir"]
@@ -30,13 +28,12 @@ def load_and_prepare(csv1_path, csv2_path, dataset1_dir, dataset2_dir):
             os.path.exists(os.path.join(dir_, img_id + ".bmp")) and
             os.path.exists(os.path.join(dir_, img_id + ".png"))
         )
+
     df = df[df.apply(mask_exists, axis=1)].reset_index(drop=True)
 
-    # label encoding
     le = LabelEncoder()
     df["encoded_label"] = le.fit_transform(df["class label"])
 
-    # split
     train_df, test_df = train_test_split(
         df,
         test_size=0.2,
