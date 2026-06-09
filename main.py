@@ -1,71 +1,53 @@
-import os
 import torch
+import torch.nn as nn
+from configs.config import *
 from data.dataset import get_dataloaders
+from data.transforms import train_transform, test_transform
 from models.model import UNetResNet34MultiTask
-from src.train import train
-from src.eval import evaluate
-from src.losses import get_losses
-from configs.config import EPOCHS, LR, CLS_LOSS_WEIGHT
-
-
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 def main():
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print("Device:", device)
+    base_path = DATA_DIR
 
-    train_loader, test_loader, n_classes_cls = get_dataloaders(BASE_PATH)
+    train_loader, test_loader, n_classes_cls, le = get_dataloaders(
+        base_path=base_path,
+        batch_size=BATCH_SIZE
+    )
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     model = UNetResNet34MultiTask(
         n_classes_seg=3,
         n_classes_cls=n_classes_cls
     ).to(device)
 
-    seg_loss, cls_loss = get_losses()
+    optimizer = torch.optim.Adam(model.parameters(), lr=LR)
+    criterion_seg = nn.CrossEntropyLoss()
+    criterion_cls = nn.CrossEntropyLoss()
 
-    optimizer = torch.optim.Adam(
-        model.parameters(),
-        lr=LR
-    )
+    for epoch in range(EPOCHS):
+        model.train()
 
-    train(
-        model=model,
-        loader=train_loader,
-        optimizer=optimizer,
-        seg_loss=seg_loss,
-        cls_loss=cls_loss,
-        device=device,
-        epochs=EPOCHS,
-        cls_loss_weight=CLS_LOSS_WEIGHT
-    )
+        total_loss = 0
 
-    evaluate(model, test_loader, device)
+        for batch in train_loader:
+            x = batch["image"].to(device)
+            y_seg = batch["mask"].to(device)
+            y_cls = batch["label"].to(device)
 
-    torch.save({
-        "model_state_dict": model.state_dict(),
-        "n_classes_cls": n_classes_cls
-    }, "models/checkpoints/model.pth")
+            optimizer.zero_grad()
 
-    print("Done")
+            seg_out, cls_out = model(x)
 
+            loss = criterion_seg(seg_out, y_seg) + CLS_LOSS_WEIGHT * criterion_cls(cls_out, y_cls)
 
-if __name__ == "__main__":
-    main()        cls_loss_weight=CLS_LOSS_WEIGHT
-    )
+            loss.backward()
+            optimizer.step()
 
-    evaluate(model, test_loader, device)
+            total_loss += loss.item()
 
-    torch.save(
-        {
-            "model_state_dict": model.state_dict(),
-            "n_classes_cls": n_classes_cls,
-            "lr": LR,
-            "epochs": EPOCHS
-        },
-        "models/checkpoints/model.pth"
-    )
+        print(f"Epoch {epoch+1} | Loss: {total_loss/len(train_loader):.4f}")
 
 
 if __name__ == "__main__":
