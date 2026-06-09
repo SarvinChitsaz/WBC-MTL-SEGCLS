@@ -54,11 +54,11 @@ def get_dataloaders(base_path, batch_size=8, test_size=0.2):
     csv1 = os.path.join(base_path, "Class Labels of Dataset 1.csv")
     csv2 = os.path.join(base_path, "Class Labels of Dataset 2.csv")
 
-    df1 = pd.read_csv(csv1)
-    df2 = pd.read_csv(csv2)
-
     dataset1_dir = os.path.join(base_path, "Dataset 1")
     dataset2_dir = os.path.join(base_path, "Dataset 2")
+
+    df1 = pd.read_csv(csv1)
+    df2 = pd.read_csv(csv2)
 
     df1["dataset_dir"] = dataset1_dir
     df2["dataset_dir"] = dataset2_dir
