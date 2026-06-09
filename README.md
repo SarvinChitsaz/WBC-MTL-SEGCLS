@@ -1,7 +1,8 @@
-# WBC-MTL-SEGCLS 🔬
+# WBC-MTL-SEGCLS
 
-**Multi-task White Blood Cell segmentation and classification using a ResNet34-based U-Net architecture**
-Simultaneous pixel-level segmentation and cell-type classification in a single forward pass.
+Multi-task White Blood Cell Segmentation and Classification using a ResNet34-based U-Net Architecture
+
+Simultaneous pixel-level segmentation and white blood cell type classification in a single forward pass.
 
 ---
 
@@ -38,7 +39,7 @@ This is achieved via a shared encoder + dual-head architecture.
 
 # Dataset
 
-The model uses the public dataset:
+The model uses the public WBC segmentation dataset:
 https://github.com/zxaoyou/segmentation_WBC
 
 ### Dataset composition:
@@ -368,7 +369,7 @@ _Side-by-side comparison of original image, ground-truth mask, and predicted mas
 ## Classification Predictions
 
 <p align="center">
-  <img src="assets/results/classification/classification_samples.png" width="600">
+  <img src="assets/results/classification/classification_samples.png" width="700">
 </p>
 
 _Correctly and incorrectly classified white blood cell samples._
@@ -396,6 +397,7 @@ _Per-class classification performance across all four WBC categories._
 </p>
 
 _Grad-CAM heatmaps highlighting the image regions most influential for classification decisions._
+
 ---
 
 # Notes
