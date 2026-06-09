@@ -3,11 +3,11 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT, "data")
 
-DATASET1_DIR = os.path.join(DATA_DIR, "Dataset 1")
-DATASET2_DIR = os.path.join(DATA_DIR, "Dataset 2")
+dataset1_dir = os.path.join(DATA_DIR, "Dataset 1")
+dataset2_dir = os.path.join(DATA_DIR, "Dataset 2")
 
-CSV1_PATH = os.path.join(DATA_DIR, "Class Labels of Dataset 1.csv")
-CSV2_PATH = os.path.join(DATA_DIR, "Class Labels of Dataset 2.csv")
+csv1_path = os.path.join(DATA_DIR, "Class Labels of Dataset 1.csv")
+csv2_path = os.path.join(DATA_DIR, "Class Labels of Dataset 2.csv")
 
 EPOCHS = 10
 LR = 1e-4
