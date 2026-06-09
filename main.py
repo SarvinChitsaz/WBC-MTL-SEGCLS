@@ -8,7 +8,8 @@ from configs.config import EPOCHS, LR, CLS_LOSS_WEIGHT
 
 
 def main():
-
+    print("HELLO FROM MAIN")
+    
     # device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print("Device:", device)
