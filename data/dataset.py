@@ -1,8 +1,9 @@
 import os
-import torch
+import numpy as np
 from torch.utils.data import Dataset
 from PIL import Image
 from .label_utils import normalize_id, convert_mask
+
 
 class WBCDataset(Dataset):
     def __init__(self, dataframe, transform=None, minority_classes=None):
@@ -16,8 +17,8 @@ class WBCDataset(Dataset):
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
 
-        img_id = normalize_id(row['image ID'])
-        dir_ = row['dataset_dir']
+        img_id = normalize_id(row["image ID"])
+        dir_ = row["dataset_dir"]
 
         img_path = os.path.join(dir_, img_id + ".bmp")
         mask_path = os.path.join(dir_, img_id + ".png")
