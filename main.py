@@ -4,6 +4,7 @@ from models.model import UNetResNet34MultiTask
 from src.train import train
 from src.eval import evaluate
 from src.losses import get_losses
+from configs.config import EPOCHS, LR, CLS_LOSS_WEIGHT
 
 
 def main():
@@ -23,7 +24,11 @@ def main():
 
     # 3. loss + optimizer
     seg_loss, cls_loss = get_losses()
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
+
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=LR
+    )
 
     # 4. training
     train(
@@ -33,7 +38,8 @@ def main():
         seg_loss=seg_loss,
         cls_loss=cls_loss,
         device=device,
-        epochs=10
+        epochs=EPOCHS,
+        cls_loss_weight=CLS_LOSS_WEIGHT
     )
 
     # 5. evaluation
@@ -42,7 +48,9 @@ def main():
     # 6. save model
     torch.save({
         "model_state_dict": model.state_dict(),
-        "n_classes_cls": n_classes_cls
+        "n_classes_cls": n_classes_cls,
+        "lr": LR,
+        "epochs": EPOCHS
     }, "models/checkpoints/model.pth")
 
     print("Model saved successfully!")
