@@ -59,7 +59,7 @@ Each sample includes:
 
 ## Segmentation Classes (Mask Encoding)
 
-> ⚠️ These are grayscale mask values (not semantic labels)
+> These are grayscale mask values (not semantic labels)
 
 | Pixel value | Class |
 |-------------|-------|
