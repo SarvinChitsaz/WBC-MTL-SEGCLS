@@ -298,21 +298,26 @@ It produces heatmaps showing which regions of the cell most influence classifica
 
 # Checkpoints
 
-Each checkpoint includes:
+Pretrained model weights are not included in this repository due to file size limitations.
 
-- Model weights
-- Optimizer state
-- Epoch number
-- Model configuration (`n_classes_seg`, `n_classes_cls`)
-- Class mappings (LabelEncoder classes)
-- Evaluation metrics
+## Download Pretrained Model
 
-Saved file:
+Download the checkpoint from Google Drive:
+
+https://drive.google.com/file/d/1BCZJtTNnL3xxWzJjYKjZZIO9T2th2zUd/view?usp=sharing
+
+After downloading, place the file in the following directory:
 
 ```text
-wbc_multitask_checkpoint.ckpt
+models/checkpoints/wbc_multitask_checkpoint.ckpt
 ```
+## Additional Information
 
+For more details about loading the checkpoint, inference, and full usage instructions, see:
+
+```text
+models/checkpoints/README.md
+```
 ---
 
 # Inference Pipeline
