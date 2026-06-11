@@ -16,7 +16,7 @@ wbc_multitask_checkpoint.ckpt
 
 ---
 
-# 📁 Step 2 — Place File in Correct Directory
+# Step 2 — Place File in Correct Directory
 
 Move the downloaded file into your project like this:
 
@@ -34,7 +34,7 @@ mkdir -p models/checkpoints
 
 ---
 
-# 🚀 Step 3 — Load Checkpoint in Python
+# Step 3 — Load Checkpoint in Python
 
 Use the following code:
 
@@ -51,7 +51,7 @@ print("Checkpoint loaded successfully")
 
 ---
 
-# 🧠 Step 4 — Restore Model Weights
+# Step 4 — Restore Model Weights
 
 After loading checkpoint, restore model:
 
@@ -61,7 +61,7 @@ model.eval()
 
 ---
 
-# 📦 What is inside the checkpoint?
+# What is inside the checkpoint?
 
 The file contains:
 
