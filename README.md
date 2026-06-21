@@ -12,7 +12,7 @@ Simultaneous pixel-level segmentation and white blood cell type classification i
   <img src="assets/results/gradcam/gradcam_sample_1.png" width="500">
 </p>
 <p align="center">
-  <em>Grad-CAM heatmaps highlighting regions influencing classification decisions.</em>
+  <em>Grad-CAM heatmaps providing interpretability for classification predictions.</em>
 </p>
 
 WBC-MTL-SEGCLS is a multi-task deep learning framework for automated White Blood Cell analysis from microscopy images.
