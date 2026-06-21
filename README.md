@@ -40,7 +40,10 @@ This is achieved via a shared encoder + dual-head architecture.
 # Dataset
 
 The model uses the public WBC segmentation dataset:
+
 https://github.com/zxaoyou/segmentation_WBC
+
+Dataset ownership, citation requirements, and license terms belong to the original dataset repository.
 
 ### Dataset composition:
 
@@ -201,7 +204,7 @@ Where:
 - Learning rate: 1e-4
 - Batch size: 8
 - Epochs: 10
-- Loss: weighted multi-task loss
+- Loss: multi-task loss with classification task weighting
 - Device: CPU / CUDA (auto-detect)
 
 ---
@@ -306,11 +309,14 @@ Download the checkpoint from Google Drive:
 
 https://drive.google.com/file/d/1BCZJtTNnL3xxWzJjYKjZZIO9T2th2zUd/view?usp=sharing
 
+The checkpoint is provided for reproducibility and demonstration purposes only.
+
 After downloading, place the file in the following directory:
 
 ```text
 models/checkpoints/wbc_multitask_checkpoint.ckpt
 ```
+
 ## Additional Information
 
 For more details about loading the checkpoint, inference, and full usage instructions, see:
@@ -333,6 +339,17 @@ At inference time:
 
 ---
 
+# Installation
+
+```bash
+git clone https://github.com/SarvinChitsaz/WBC-MTL-SEGCLS.git
+
+cd WBC-MTL-SEGCLS
+
+pip install -r requirements.txt
+```
+---
+
 # Requirements
 
 ```text
@@ -346,15 +363,7 @@ matplotlib
 numpy
 pandas
 ```
-
-Install:
-
-```bash
-pip install -r requirements.txt
-```
-
 ---
-
 # Visualization Results
 
 ## Segmentation Samples
@@ -401,7 +410,7 @@ _Per-class classification performance across all four WBC categories._
   <img src="assets/results/gradcam/gradcam_sample_2.png" width="500">
 </p>
 
-_Grad-CAM heatmaps highlighting the image regions most influential for classification decisions._
+_Grad-CAM heatmaps providing interpretability for classification predictions._
 
 ---
 
@@ -412,6 +421,15 @@ _Grad-CAM heatmaps highlighting the image regions most influential for classific
 - Classes with fewer than 20 samples are removed automatically
 - Model supports CPU and GPU execution
 - Grad-CAM uses forward/backward hooks on the bottleneck layer (`model.center`)
+
+---
+# Limitations
+
+- This project is a research/prototype implementation and is not intended for clinical diagnosis.
+- Evaluation is performed on a relatively small public dataset.
+- No external validation dataset is used.
+- The current implementation uses a train/test split only.
+- Grad-CAM is used as an interpretability aid and should not be considered clinical evidence.
 
 ---
 
